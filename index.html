@@ -1,0 +1,494 @@
+<html>
+<head>
+  <meta charvctk_set="UTF-8">
+  <title>ComVo</title>
+</head>
+<h2>Toward Complex-Valued Neural Networks for Waveform Generation</h2>
+
+<h3>Anonymous</h3>
+
+<h4><a href="">[Paper]</a> <a href="https://github.com/anonymous7136/ComVo/tree/main">[Code]</a></h4>
+
+<body>
+
+Neural vocoders have recently advanced waveform generation, yielding natural and expressive audio.
+Among these approaches, iSTFT-based vocoders have gained attention. 
+They predict a complex-valued spectrogram and then synthesize the waveform via iSTFT, thereby avoiding redundant, computationally expensive upsampling. 
+However, current approaches use real-valued networks that process the real and imaginary parts independently.
+This separation limits their ability to capture the inherent structure of complex spectrograms.
+We present ComVo, a Complex-valued neural Vocoder whose generator and discriminator use native complex arithmetic.
+This enables an adversarial training framework that provides structured feedback directly in the complex domain.
+To guide phase transformations in a structured manner, we introduce phase quantization, which discretizes phase values and regularizes the training process.
+Finally, we propose a block-matrix computation scheme to improve training efficiency by reducing redundant operations. 
+Experiments demonstrate that ComVo achieves higher synthesis quality than comparable real-valued baselines, and that its block-matrix scheme reduces training time by 25\%.
+Audio samples and code are available at <a href="https://anonymous7136.github.io/">https://anonymous7136.github.io/</a>.
+
+<div>
+  <h2 id="">Speech </h2>    
+  <h3 id="">LibriTTS-clean</h3>    
+  <table>
+  <thead>
+  <tr>
+      <th>Ground-Truth</th>
+      <th>HiFiGAN (V1)</th>
+      <th>iSTFTNet</th>
+      <th>BigVGAN (base)</th>
+      <th>Vocos</th>
+      <th>ComVo</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/gt/LibriTTS_test-clean_1580_141083_1580_141083_000070_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/hifigan/LibriTTS_test-clean_1580_141083_1580_141083_000070_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/istftnet/LibriTTS_test-clean_1580_141083_1580_141083_000070_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/bigvgan/LibriTTS_test-clean_1580_141083_1580_141083_000070_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/vocos/LibriTTS_test-clean_1580_141083_1580_141083_000070_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/comvo/LibriTTS_test-clean_1580_141083_1580_141083_000070_000000.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/gt/LibriTTS_test-clean_5683_32879_5683_32879_000004_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/hifigan/LibriTTS_test-clean_5683_32879_5683_32879_000004_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/istftnet/LibriTTS_test-clean_5683_32879_5683_32879_000004_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/bigvgan/LibriTTS_test-clean_5683_32879_5683_32879_000004_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/vocos/LibriTTS_test-clean_5683_32879_5683_32879_000004_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/comvo/LibriTTS_test-clean_5683_32879_5683_32879_000004_000000.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/gt/LibriTTS_test-clean_7127_75947_7127_75947_000031_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/hifigan/LibriTTS_test-clean_7127_75947_7127_75947_000031_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/istftnet/LibriTTS_test-clean_7127_75947_7127_75947_000031_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/bigvgan/LibriTTS_test-clean_7127_75947_7127_75947_000031_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/vocos/LibriTTS_test-clean_7127_75947_7127_75947_000031_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/comvo/LibriTTS_test-clean_7127_75947_7127_75947_000031_000000.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/gt/LibriTTS_test-clean_8230_279154_8230_279154_000021_000003.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/hifigan/LibriTTS_test-clean_8230_279154_8230_279154_000021_000003.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/istftnet/LibriTTS_test-clean_8230_279154_8230_279154_000021_000003.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/bigvgan/LibriTTS_test-clean_8230_279154_8230_279154_000021_000003.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/vocos/LibriTTS_test-clean_8230_279154_8230_279154_000021_000003.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/comvo/LibriTTS_test-clean_8230_279154_8230_279154_000021_000003.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  </table>
+  </div>
+  <div>
+  <h3 id="">LibriTTS-others</h3>    
+  <table>
+  <thead>
+  <tr>
+      <th>Ground-Truth</th>
+      <th>HiFiGAN (V1)</th>
+      <th>iSTFTNet</th>
+      <th>BigVGAN (base)</th>
+      <th>Vocos</th>
+      <th>ComVo</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/gt/LibriTTS_test-other_1688_142285_1688_142285_000006_000002.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/hifigan/LibriTTS_test-other_1688_142285_1688_142285_000006_000002.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/istftnet/LibriTTS_test-other_1688_142285_1688_142285_000006_000002.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/bigvgan/LibriTTS_test-other_1688_142285_1688_142285_000006_000002.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/vocos/LibriTTS_test-other_1688_142285_1688_142285_000006_000002.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/comvo/LibriTTS_test-other_1688_142285_1688_142285_000006_000002.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/gt/LibriTTS_test-other_4198_61336_4198_61336_000005_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/hifigan/LibriTTS_test-other_4198_61336_4198_61336_000005_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/istftnet/LibriTTS_test-other_4198_61336_4198_61336_000005_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/bigvgan/LibriTTS_test-other_4198_61336_4198_61336_000005_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/vocos/LibriTTS_test-other_4198_61336_4198_61336_000005_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/comvo/LibriTTS_test-other_4198_61336_4198_61336_000005_000000.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/gt/LibriTTS_test-other_533_131556_533_131556_000001_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/hifigan/LibriTTS_test-other_533_131556_533_131556_000001_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/istftnet/LibriTTS_test-other_533_131556_533_131556_000001_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/bigvgan/LibriTTS_test-other_533_131556_533_131556_000001_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/vocos/LibriTTS_test-other_533_131556_533_131556_000001_000000.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/comvo/LibriTTS_test-other_533_131556_533_131556_000001_000000.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/gt/LibriTTS_test-other_7975_280057_7975_280057_000014_000001.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/hifigan/LibriTTS_test-other_7975_280057_7975_280057_000014_000001.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/istftnet/LibriTTS_test-other_7975_280057_7975_280057_000014_000001.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/bigvgan/LibriTTS_test-other_7975_280057_7975_280057_000014_000001.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/vocos/LibriTTS_test-other_7975_280057_7975_280057_000014_000001.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/libritts/comvo/LibriTTS_test-other_7975_280057_7975_280057_000014_000001.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
+  
+  <div>
+  <h2 id="">Out-of-distribution</h2>    
+  <h3 id="">MUSDB18-HQ Bass</h3>    
+  <table>
+  <thead>
+  <tr>
+      <th>Ground-Truth</th>
+      <th>HiFiGAN (V1)</th>
+      <th>iSTFTNet</th>
+      <th>BigVGAN (base)</th>
+      <th>Vocos</th>
+      <th>ComVo</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/gt/Detsky Sad - Walkie Talkie_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/hifigan/Detsky Sad - Walkie Talkie_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/istftnet/Detsky Sad - Walkie Talkie_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/bigvgan/Detsky Sad - Walkie Talkie_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/vocos/Detsky Sad - Walkie Talkie_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/comvo/Detsky Sad - Walkie Talkie_bass.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/gt/Moosmusic - Big Dummy Shake_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/hifigan/Moosmusic - Big Dummy Shake_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/istftnet/Moosmusic - Big Dummy Shake_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/bigvgan/Moosmusic - Big Dummy Shake_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/vocos/Moosmusic - Big Dummy Shake_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/comvo/Moosmusic - Big Dummy Shake_bass.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/gt/Secretariat - Over The Top_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/hifigan/Secretariat - Over The Top_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/istftnet/Secretariat - Over The Top_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/bigvgan/Secretariat - Over The Top_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/vocos/Secretariat - Over The Top_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/comvo/Secretariat - Over The Top_bass.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/gt/The Doppler Shift - Atrophy_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/hifigan/The Doppler Shift - Atrophy_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/istftnet/The Doppler Shift - Atrophy_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/bigvgan/The Doppler Shift - Atrophy_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/vocos/The Doppler Shift - Atrophy_bass.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/bass/comvo/The Doppler Shift - Atrophy_bass.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  </table>
+  </div>
+  <div>
+  <h3 id="">MUSDB18-HQ Drums</h3>    
+  <table>
+  <thead>
+  <tr>
+      <th>Ground-Truth</th>
+      <th>HiFiGAN (V1)</th>
+      <th>iSTFTNet</th>
+      <th>BigVGAN (base)</th>
+      <th>Vocos</th>
+      <th>ComVo</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/gt/Bobby Nobody - Stitch Up_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/hifigan/Bobby Nobody - Stitch Up_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/istftnet/Bobby Nobody - Stitch Up_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/bigvgan/Bobby Nobody - Stitch Up_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/vocos/Bobby Nobody - Stitch Up_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/comvo/Bobby Nobody - Stitch Up_drums.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/gt/Buitraker - Revo X_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/hifigan/Buitraker - Revo X_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/istftnet/Buitraker - Revo X_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/bigvgan/Buitraker - Revo X_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/vocos/Buitraker - Revo X_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/comvo/Buitraker - Revo X_drums.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/gt/Georgia Wonder - Siren_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/hifigan/Georgia Wonder - Siren_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/istftnet/Georgia Wonder - Siren_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/bigvgan/Georgia Wonder - Siren_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/vocos/Georgia Wonder - Siren_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/comvo/Georgia Wonder - Siren_drums.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/gt/The Easton Ellises - Falcon 69_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/hifigan/The Easton Ellises - Falcon 69_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/istftnet/The Easton Ellises - Falcon 69_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/bigvgan/The Easton Ellises - Falcon 69_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/vocos/The Easton Ellises - Falcon 69_drums.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/drums/comvo/The Easton Ellises - Falcon 69_drums.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  </table>
+  </div>
+  <div>
+  <h3 id="">MUSDB18-HQ Mixture</h3>    
+  <table>
+  <thead>
+  <tr>
+      <th>Ground-Truth</th>
+      <th>HiFiGAN (V1)</th>
+      <th>iSTFTNet</th>
+      <th>BigVGAN (base)</th>
+      <th>Vocos</th>
+      <th>ComVo</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/gt/James Elder & Mark M Thompson - The English Actor_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/hifigan/James Elder & Mark M Thompson - The English Actor_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/istftnet/James Elder & Mark M Thompson - The English Actor_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/bigvgan/James Elder & Mark M Thompson - The English Actor_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/vocos/James Elder & Mark M Thompson - The English Actor_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/comvo/James Elder & Mark M Thompson - The English Actor_mixture.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/gt/Side Effects Project - Sing With Me_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/hifigan/Side Effects Project - Sing With Me_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/istftnet/Side Effects Project - Sing With Me_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/bigvgan/Side Effects Project - Sing With Me_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/vocos/Side Effects Project - Sing With Me_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/comvo/Side Effects Project - Sing With Me_mixture.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/gt/The Easton Ellises (Baumi) - SDRNR_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/hifigan/The Easton Ellises (Baumi) - SDRNR_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/istftnet/The Easton Ellises (Baumi) - SDRNR_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/bigvgan/The Easton Ellises (Baumi) - SDRNR_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/vocos/The Easton Ellises (Baumi) - SDRNR_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/comvo/The Easton Ellises (Baumi) - SDRNR_mixture.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/gt/The Sunshine Garcia Band - For I Am The Moon_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/hifigan/The Sunshine Garcia Band - For I Am The Moon_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/istftnet/The Sunshine Garcia Band - For I Am The Moon_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/bigvgan/The Sunshine Garcia Band - For I Am The Moon_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/vocos/The Sunshine Garcia Band - For I Am The Moon_mixture.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/mixture/comvo/The Sunshine Garcia Band - For I Am The Moon_mixture.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  </table>
+  </div>
+  <div>
+  <h3 id="">MUSDB18-HQ Others</h3>    
+  <table>
+  <thead>
+  <tr>
+      <th>Ground-Truth</th>
+      <th>HiFiGAN (V1)</th>
+      <th>iSTFTNet</th>
+      <th>BigVGAN (base)</th>
+      <th>Vocos</th>
+      <th>ComVo</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/gt/Al James - Schoolboy Facination_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/hifigan/Al James - Schoolboy Facination_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/istftnet/Al James - Schoolboy Facination_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/bigvgan/Al James - Schoolboy Facination_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/vocos/Al James - Schoolboy Facination_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/comvo/Al James - Schoolboy Facination_other.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/gt/AM Contra - Heart Peripheral_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/hifigan/AM Contra - Heart Peripheral_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/istftnet/AM Contra - Heart Peripheral_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/bigvgan/AM Contra - Heart Peripheral_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/vocos/AM Contra - Heart Peripheral_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/comvo/AM Contra - Heart Peripheral_other.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/gt/The Doppler Shift - Atrophy_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/hifigan/The Doppler Shift - Atrophy_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/istftnet/The Doppler Shift - Atrophy_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/bigvgan/The Doppler Shift - Atrophy_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/vocos/The Doppler Shift - Atrophy_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/comvo/The Doppler Shift - Atrophy_other.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/gt/We Fell From The Sky - Not You_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/hifigan/We Fell From The Sky - Not You_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/istftnet/We Fell From The Sky - Not You_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/bigvgan/We Fell From The Sky - Not You_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/vocos/We Fell From The Sky - Not You_other.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/others/comvo/We Fell From The Sky - Not You_other.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
+  <div>
+  <h3 id="">MUSDB18-HQ Vocals</h3>    
+  <table>
+  <thead>
+  <tr>
+      <th>Ground-Truth</th>
+      <th>HiFiGAN (V1)</th>
+      <th>iSTFTNet</th>
+      <th>BigVGAN (base)</th>
+      <th>Vocos</th>
+      <th>ComVo</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/gt/Ben Carrigan - We'll Talk About It All Tonight_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/hifigan/Ben Carrigan - We'll Talk About It All Tonight_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/istftnet/Ben Carrigan - We'll Talk About It All Tonight_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/bigvgan/Ben Carrigan - We'll Talk About It All Tonight_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/vocos/Ben Carrigan - We'll Talk About It All Tonight_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/comvo/Ben Carrigan - We'll Talk About It All Tonight_vocals.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/gt/Forkupines - Semantics_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/hifigan/Forkupines - Semantics_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/istftnet/Forkupines - Semantics_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/bigvgan/Forkupines - Semantics_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/vocos/Forkupines - Semantics_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/comvo/Forkupines - Semantics_vocals.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/gt/Girls Under Glass - We Feel Alright_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/hifigan/Girls Under Glass - We Feel Alright_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/istftnet/Girls Under Glass - We Feel Alright_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/bigvgan/Girls Under Glass - We Feel Alright_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/vocos/Girls Under Glass - We Feel Alright_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/comvo/Girls Under Glass - We Feel Alright_vocals.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/gt/Side Effects Project - Sing With Me_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/hifigan/Side Effects Project - Sing With Me_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/istftnet/Side Effects Project - Sing With Me_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/bigvgan/Side Effects Project - Sing With Me_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/vocos/Side Effects Project - Sing With Me_vocals.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/vocals/comvo/Side Effects Project - Sing With Me_vocals.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+  </table>
+</div>
+
+<div>
+  <h3 id="">Youtube Source</h3>    
+  <table>
+  <thead>
+  <tr>
+      <th>Ground-Truth</th>
+      <th>HiFiGAN (V1)</th>
+      <th>iSTFTNet</th>
+      <th>BigVGAN (base)</th>
+      <th>Vocos</th>
+      <th>ComVo</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/gt/youtube1.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/hifigan/youtube1.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/istftnet/youtube1.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/bigvgan/youtube1.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/vocos/youtube1.wav" type="audio/wav"></audio></td>
+  <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/comvo/youtube1.wav" type="audio/wav"></audio></td>
+  </tr>
+  </tbody>
+  <tbody>
+    <tr>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/gt/youtube2.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/hifigan/youtube2.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/istftnet/youtube2.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/bigvgan/youtube2.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/vocos/youtube2.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/comvo/youtube2.wav" type="audio/wav"></audio></td>
+    </tr>
+  </tbody>
+
+  <tbody>
+    <tr>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/gt/youtube3.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/hifigan/youtube3.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/istftnet/youtube3.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/bigvgan/youtube3.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/vocos/youtube3.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/comvo/youtube3.wav" type="audio/wav"></audio></td>
+    </tr>
+  </tbody>
+
+  <tbody>
+    <tr>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/gt/youtube4.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/hifigan/youtube4.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/istftnet/youtube4.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/bigvgan/youtube4.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/vocos/youtube4.wav" type="audio/wav"></audio></td>
+    <td><audio controls style="width: 225px; height: 50px"><source src="samples/youtube/comvo/youtube4.wav" type="audio/wav"></audio></td>
+    </tr>
+    </tbody>
+  </table>
+  </div>
+</body>
+</html>
