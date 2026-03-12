@@ -1,4 +1,4 @@
-# Toward Complex-Valued Neural Networks for Waveform Generation (ICLR 2026)
+# [ICLR 2026] Toward Complex-Valued Neural Networks for Waveform Generation
 #### Hyung-Seok Oh, Deok-Hyeon Cho, Seung-Bin Kim and Seong-Whan Lee 
 
 This repository contains the official implementation of ComVo,
