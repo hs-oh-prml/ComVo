@@ -1,0 +1,138 @@
+# pytorch_lightning==2.5.0
+seed_everything: 4444
+trainer:
+  accelerator: gpu
+  strategy: auto
+  devices: -1
+  num_nodes: 1
+  precision: null
+  logger:
+    class_path: pytorch_lightning.loggers.TensorBoardLogger
+    init_args:
+      save_dir: ./ComVo_large
+      name: lightning_logs
+      version: null
+      log_graph: false
+      default_hp_metric: true
+      prefix: ''
+      sub_dir: null
+      comment: ''
+      purge_step: null
+      max_queue: 10
+      flush_secs: 120
+      filename_suffix: ''
+  callbacks:
+  - class_path: pytorch_lightning.callbacks.LearningRateMonitor
+    init_args:
+      logging_interval: null
+      log_momentum: false
+      log_weight_decay: false
+  - class_path: pytorch_lightning.callbacks.ModelSummary
+    init_args:
+      max_depth: 2
+  - class_path: pytorch_lightning.callbacks.ModelCheckpoint
+    init_args:
+      dirpath: null
+      filename: checkpoint_{epoch}_{step}_{val_loss:.4f}
+      monitor: val_loss
+      verbose: false
+      save_last: true
+      save_top_k: 3
+      save_weights_only: false
+      mode: min
+      auto_insert_metric_name: true
+      every_n_train_steps: null
+      train_time_interval: null
+      every_n_epochs: null
+      save_on_train_epoch_end: null
+      enable_version_counter: true
+  - class_path: exp.helpers.GradNormCallback
+  fast_dev_run: false
+  max_epochs: null
+  min_epochs: null
+  max_steps: 2000000
+  min_steps: null
+  max_time: null
+  limit_train_batches: null
+  limit_val_batches: 100
+  limit_test_batches: null
+  limit_predict_batches: null
+  overfit_batches: 0.0
+  val_check_interval: null
+  check_val_every_n_epoch: 1
+  num_sanity_val_steps: null
+  log_every_n_steps: 100
+  enable_checkpointing: null
+  enable_progress_bar: null
+  enable_model_summary: null
+  accumulate_grad_batches: 1
+  gradient_clip_val: null
+  gradient_clip_algorithm: null
+  deterministic: null
+  benchmark: null
+  inference_mode: true
+  use_distributed_sampler: true
+  profiler: null
+  detect_anomaly: false
+  barebones: false
+  plugins: null
+  sync_batchnorm: false
+  reload_dataloaders_every_n_epochs: 0
+  default_root_dir: null
+model:
+  class_path: exp.experiment_cdisc.ComVoExp_cdisc
+  init_args:
+    feature_extractor:
+      class_path: exp.feature_extractors.MelSpectrogramFeatures
+      init_args:
+        sample_rate: 24000
+        n_fft: 1024
+        hop_length: 256
+        n_mels: 100
+        padding: center
+    backbone:
+      class_path: exp.models.ComVo
+      init_args:
+        input_channels: 100
+        dim: 1536
+        intermediate_dim: 4608
+        num_layers: 8
+        n_quantization: 128
+        layer_scale_init_value: null
+        adanorm_num_embeddings: null
+        rank: null
+    head:
+      class_path: exp.heads.ISTFTHead
+      init_args:
+        dim: 1536
+        n_fft: 1024
+        hop_length: 256
+        padding: center
+    sample_rate: 24000
+    initial_learning_rate: 0.0002
+    num_warmup_steps: 0
+    mel_loss_coeff: 45.0
+    mrd_loss_coeff: 0.1
+    pretrain_mel_steps: 0
+    decay_mel_coeff: false
+    evaluate_utmos: true
+    evaluate_pesq: true
+    evaluate_periodicty: true
+data:
+  class_path: exp.dataset.AudioDataModule
+  init_args:
+    train_params:
+      filelist_path: filelist.train
+      sampling_rate: 24000
+      num_samples: 16384
+      batch_size: 8
+      num_workers: 8
+    val_params:
+      filelist_path: filelist.val
+      sampling_rate: 24000
+      num_samples: 48384
+      batch_size: 16
+      num_workers: 8
+ckpt_path: null
+optimizer: null
+lr_scheduler: null

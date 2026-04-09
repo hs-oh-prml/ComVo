@@ -7,7 +7,7 @@ a complex-valued neural vocoder for waveform generation based on iSTFT.
 [![Paper](https://img.shields.io/badge/Paper-OpenReview-blue)](https://openreview.net/forum?id=U4GXPqm3Va)
 [![Demo](https://img.shields.io/badge/Demo-Audio_Samples-green)](https://hs-oh-prml.github.io/ComVo/)
 [![GitHub Stars](https://img.shields.io/github/stars/hs-oh-prml/ComVo?style=social)](https://github.com/hs-oh-prml/ComVo)
-[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-hsoh%2FComVo-yellow)](https://huggingface.co/hsoh/ComVo)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-ComVo_Collection-yellow)](https://huggingface.co/collections/hsoh/comvo)
 [![Pretrained](https://img.shields.io/badge/Pretrained-Checkpoint-orange)](https://works.do/xM2ttS4)
 
 <p align="center">
@@ -44,15 +44,89 @@ pip install -r requirements
 - PyTorch >= 2.0
 - CUDA-enabled GPU
 
-## Pretrained checkpoint
+## Notes
+- `from_waveform` performs end-to-end inference from raw audio.
+- `build_feature_extractor` allows explicit feature extraction, useful for debugging or custom pipelines.
 
-We provide a pretrained ComVo checkpoint for quick inference:
+## Pretrained checkpoints
 
-- Download: [Checkpoint link](https://works.do/xM2ttS4)
-- Config: `configs/configs.yaml`
-- Target sampling rate: `24 kHz`
+We provide pretrained ComVo checkpoints for quick inference:
 
-Run inference with:
+| Model | Parameters | Hugging Face | Checkpoint | Sampling rate | n_fft | hop size | win length |
+|------|-----------|--------------|------------|---------------|-------|----------|------------|
+| Base | 13.28M | [![HF Model](https://img.shields.io/badge/HF-Model-yellow)](https://huggingface.co/hsoh/ComVo-base) | [![Download](https://img.shields.io/badge/Checkpoint-Download-orange)](https://works.do/xM2ttS4) | 24 kHz | 100 | 12000 | 256 |
+| Large | 114.56M | [![HF Model](https://img.shields.io/badge/HF-Model-yellow)](https://huggingface.co/hsoh/ComVo-large) | [![Download](https://img.shields.io/badge/Checkpoint-Download-orange)](https://works.do/FYuHg2z) | 24 kHz | 100 | 12000 | 256 |
+
+| Model | UTMOS ↑ | PESQ (wb) ↑ | PESQ (nb) ↑ | MRSTFT ↓ | Periodicity RMSE ↓ | V/UV F1 ↑ |
+|------|--------|-------------|-------------|----------|--------------------|-----------|
+| Base | 3.6744 | 3.8219 | 4.0727 | 0.8580 | 0.0925 | 0.9602 |
+| Large | 3.7618 | 3.9993 | 4.1639 | 0.8227 | 0.0751 | 0.9706 |
+
+
+## Hugging Face Inference
+1. End-to-end inference from waveform
+```python
+import torch
+import torchaudio
+from hf_model import ComVoHF
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+# Load model
+model = ComVoHF.from_pretrained("hsoh/ComVo-base")
+model = model.eval().to(device)
+
+# Load audio
+wav, sr = torchaudio.load("input.wav")
+
+# Convert to mono if needed
+if wav.size(0) > 1:
+    wav = wav.mean(dim=0, keepdim=True)
+
+wav = wav.to(device)  # [1, T]
+
+# Inference
+with torch.inference_mode():
+    audio = model.from_waveform(wav)
+
+# Save output
+torchaudio.save("output.wav", audio.squeeze(0).cpu(), model.sample_rate)
+```
+
+2. Inference from extracted features
+```python
+import torch
+import torchaudio
+from hf_model import ComVoHF
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+# Load model
+model = ComVoHF.from_pretrained("hsoh/ComVo-base")
+model = model.eval().to(device)
+
+# Build feature extractor
+feature_extractor = model.build_feature_extractor().to(device)
+
+# Load audio
+wav, sr = torchaudio.load("input.wav")
+
+# Convert to mono if needed
+if wav.size(0) > 1:
+    wav = wav.mean(dim=0, keepdim=True)
+
+wav = wav.to(device)  # [1, T]
+
+# Feature extraction + inference
+with torch.inference_mode():
+    features = feature_extractor(wav)
+    audio = model(features)
+
+# Save output
+torchaudio.save("output.wav", audio.squeeze(0).cpu(), model.sample_rate)
+```
+
+## Inference
 
 ```bash
 python infer.py -c configs/configs.yaml --ckpt /path/to/comvo.ckpt --wavfile /path/to/input.wav --out_dir ./results
