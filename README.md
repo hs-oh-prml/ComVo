@@ -8,7 +8,6 @@ a complex-valued neural vocoder for waveform generation based on iSTFT.
 [![Demo](https://img.shields.io/badge/Demo-Audio_Samples-green)](https://hs-oh-prml.github.io/ComVo/)
 [![GitHub Stars](https://img.shields.io/github/stars/hs-oh-prml/ComVo?style=social)](https://github.com/hs-oh-prml/ComVo)
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-ComVo_Collection-yellow)](https://huggingface.co/collections/hsoh/comvo)
-[![Pretrained](https://img.shields.io/badge/Pretrained-Checkpoint-orange)](https://works.do/xM2ttS4)
 
 <p align="center">
   <img src="assets/architecture.png" alt="">
